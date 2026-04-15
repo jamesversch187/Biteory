@@ -6,7 +6,6 @@ import { FeaturedHero } from '@/components/home/FeaturedHero'
 import { ListCard } from '@/components/home/ListCard'
 import { FilterBar } from '@/components/home/FilterBar'
 import posthog from '@/lib/posthog'
-import { getSessionId } from '@/lib/session'
 
 export default function HomePage() {
   const [lists, setLists] = useState<ListSummary[]>([])
@@ -64,11 +63,7 @@ export default function HomePage() {
               onFilterChange={(next) => {
                 setFilter(next)
                 if (next.cuisine) {
-                  posthog.capture({
-                    distinctId: getSessionId(),
-                    event: 'cuisine_filter_applied',
-                    properties: { cuisine: next.cuisine },
-                  })
+                  posthog.capture('cuisine_filter_applied', { cuisine: next.cuisine })
                 }
               }}
             />

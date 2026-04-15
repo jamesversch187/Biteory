@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import type { MenuItem } from '@/types'
 import { getMenuItems, addMenuItem as addMenuItemService, getMenuRatings, setMenuRating } from '@/services'
 import posthog from '@/lib/posthog'
-import { getSessionId } from '@/lib/session'
 
 interface MenuState {
   items: Record<string, MenuItem[]>
@@ -31,13 +30,9 @@ export const useMenuStore = create<MenuState>()((set, get) => ({
 
   async addItem(restaurantId, name) {
     const item = await addMenuItemService(restaurantId, name)
-    posthog.capture({
-      distinctId: getSessionId(),
-      event: 'menu_item_added',
-      properties: {
-        restaurant_id: restaurantId,
-        item_name: name,
-      },
+    posthog.capture('menu_item_added', {
+      restaurant_id: restaurantId,
+      item_name: name,
     })
     set((state) => {
       const existing = state.items[restaurantId] ?? []
@@ -52,13 +47,9 @@ export const useMenuStore = create<MenuState>()((set, get) => ({
   async setRating(menuItemId, rating) {
     set((state) => ({ ratings: { ...state.ratings, [menuItemId]: rating } }))
     await setMenuRating(menuItemId, rating)
-    posthog.capture({
-      distinctId: getSessionId(),
-      event: 'menu_item_rated',
-      properties: {
-        item_id: menuItemId,
-        rating,
-      },
+    posthog.capture('menu_item_rated', {
+      item_id: menuItemId,
+      rating,
     })
   },
 

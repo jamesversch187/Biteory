@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import type { VoteDirection, VoteTally } from '@/types'
 import { vote as voteService, getSessionVotes } from '@/services'
 import posthog from '@/lib/posthog'
-import { getSessionId } from '@/lib/session'
 
 interface VoteState {
   // Current session's vote directions, keyed by "${listId}::${restaurantId}"
@@ -48,15 +47,11 @@ export const useVoteStore = create<VoteState>()((set, get) => ({
 
     // Persist to server and update with authoritative counts
     const tally = await voteService(listId, restaurantId, direction)
-    posthog.capture({
-      distinctId: getSessionId(),
-      event: 'restaurant_voted',
-      properties: {
-        list_id: listId,
-        restaurant_id: restaurantId,
-        direction,
-        resulting_vote: tally.userVote ?? null,
-      },
+    posthog.capture('restaurant_voted', {
+      list_id: listId,
+      restaurant_id: restaurantId,
+      direction,
+      resulting_vote: tally.userVote ?? null,
     })
     set((state) => ({
       sessionVotes: tally.userVote

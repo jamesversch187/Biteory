@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import type { ListEntry, Restaurant } from '@/types'
 import { addRestaurantToList, getAddedEntries as fetchAddedEntries, checkMapsUrlExists } from '@/services'
 import posthog from '@/lib/posthog'
-import { getSessionId } from '@/lib/session'
 
 interface AddedRestaurantsState {
   entries: Record<string, ListEntry[]>
@@ -22,15 +21,11 @@ export const useAddedRestaurantsStore = create<AddedRestaurantsState>()((set, ge
 
   async addRestaurant(listId, restaurant) {
     await addRestaurantToList(listId, restaurant)
-    posthog.capture({
-      distinctId: getSessionId(),
-      event: 'restaurant_added_to_list',
-      properties: {
-        list_id: listId,
-        restaurant_id: restaurant.id,
-        restaurant_name: restaurant.name,
-        has_maps_url: !!restaurant.mapsUrl,
-      },
+    posthog.capture('restaurant_added_to_list', {
+      list_id: listId,
+      restaurant_id: restaurant.id,
+      restaurant_name: restaurant.name,
+      has_maps_url: !!restaurant.mapsUrl,
     })
     const newEntry: ListEntry = { restaurant, initialUpvotes: 1, initialDownvotes: 0 }
     set((state) => {

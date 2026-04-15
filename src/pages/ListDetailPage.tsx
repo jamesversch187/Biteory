@@ -8,7 +8,6 @@ import { useAddedRestaurantsStore } from '@/store/addedRestaurantsStore'
 import { RankItem } from '@/components/list/RankItem'
 import { AddRestaurantForm } from '@/components/list/AddRestaurantForm'
 import posthog from '@/lib/posthog'
-import { getSessionId } from '@/lib/session'
 
 const cityLabel: Record<string, string> = {
   'new-york': 'New York',
@@ -74,16 +73,12 @@ export default function ListDetailPage() {
         setLoading(false)
         hydrateForList(data.id)
         loadForList(data.id)
-        posthog.capture({
-          distinctId: getSessionId(),
-          event: 'list_viewed',
-          properties: {
-            list_id: data.id,
-            list_slug: data.slug,
-            list_title: data.title,
-            cuisine: data.cuisine ?? null,
-            city: data.city ?? null,
-          },
+        posthog.capture('list_viewed', {
+          list_id: data.id,
+          list_slug: data.slug,
+          list_title: data.title,
+          cuisine: data.cuisine ?? null,
+          city: data.city ?? null,
         })
       }
     })
@@ -185,13 +180,9 @@ export default function ListDetailPage() {
                   onClick={() => {
                     setPriceFilter(p)
                     setPriceDropdownOpen(false)
-                    posthog.capture({
-                      distinctId: getSessionId(),
-                      event: 'price_filter_applied',
-                      properties: {
-                        list_id: list.id,
-                        price_range: p,
-                      },
+                    posthog.capture('price_filter_applied', {
+                      list_id: list.id,
+                      price_range: p,
                     })
                   }}
                   className={`w-full text-left text-xs font-body px-3 py-1.5 hover:bg-cream transition-colors ${

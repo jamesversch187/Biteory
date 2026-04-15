@@ -1,7 +1,8 @@
-import { PostHog } from 'posthog-node/edge'
+import posthog from 'posthog-js'
 
-const posthog = new PostHog(import.meta.env.VITE_POSTHOG_KEY as string, {
-  host: import.meta.env.VITE_POSTHOG_HOST as string,
+posthog.init(import.meta.env.VITE_POSTHOG_KEY as string, {
+  api_host: import.meta.env.VITE_POSTHOG_HOST as string,
+  person_profiles: 'identified_only',
 })
 
 export default posthog
