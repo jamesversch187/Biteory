@@ -16,7 +16,9 @@
       "Bash(git --version)",
       "Bash(command -v hub)",
       "Bash(gh repo:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(tsx:*)",
+      "Bash(npx tsx:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
