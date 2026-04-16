@@ -5,7 +5,7 @@ import { lists } from '../src/data/lists'
 import { blogPosts } from '../src/data/blogPosts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const BASE_URL = 'https://foodranker.com'
+const BASE_URL = 'https://www.biteory.com'
 const TODAY = new Date().toISOString().slice(0, 10)
 
 function parseDate(display: string): string {
