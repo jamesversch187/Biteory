@@ -6,8 +6,8 @@ const denverNeighborhoods: BlogPost = {
   isoDate: '2026-04-12',
   title: "Denver's Best Neighborhoods for Restaurants",
   subtitle: "A city that grew up fast. Here's where the food kept pace.",
-  coverImageUrl: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=1200&auto=format&fit=crop&q=80',
-  coverImageAlt: 'Denver skyline with the Rocky Mountains in the background',
+  coverImageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&auto=format&fit=crop&q=85',
+  coverImageAlt: 'Vibrant restaurant interior with warm lighting and a busy open kitchen',
   body: (
     <article className="space-y-8">
 
@@ -121,8 +121,8 @@ const denverRestaurantScene: BlogPost = {
   isoDate: '2026-04-12',
   title: "The State of Denver's Restaurant Scene",
   subtitle: "More ambition, higher stakes, and a few things worth worrying about.",
-  coverImageUrl: 'https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=1200&auto=format&fit=crop&q=80',
-  coverImageAlt: 'A bustling restaurant dining room with warm ambient lighting',
+  coverImageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&auto=format&fit=crop&q=85',
+  coverImageAlt: 'Elegantly plated fine dining dish with delicate garnish',
   body: (
     <article className="space-y-8">
 
@@ -213,8 +213,8 @@ const denverBestRestaurants: BlogPost = {
   isoDate: '2026-04-12',
   title: 'The Best Restaurants in Denver Right Now',
   subtitle: "Not the most hyped. Not the newest. The ones actually worth your time.",
-  coverImageUrl: 'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=1200&auto=format&fit=crop&q=80',
-  coverImageAlt: 'A beautifully plated dish at a top Denver restaurant',
+  coverImageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85',
+  coverImageAlt: 'Overhead shot of a colorful spread of dishes on a table',
   body: (
     <article className="space-y-8">
 
@@ -313,8 +313,8 @@ const denverGreenChile: BlogPost = {
   isoDate: '2026-04-12',
   title: "Denver's Green Chile: A Guide to the City's Defining Dish",
   subtitle: "Colorado's most fiercely debated food, and where to find the best version of it.",
-  coverImageUrl: 'https://images.unsplash.com/photo-1583608564994-4de3f5c1b0e0?w=1200&auto=format&fit=crop&q=80',
-  coverImageAlt: 'A bowl of green chile stew with pork and roasted peppers',
+  coverImageUrl: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=1200&auto=format&fit=crop&q=85',
+  coverImageAlt: 'Close-up of street tacos with fresh green salsa and cilantro',
   body: (
     <article className="space-y-8">
 
@@ -408,8 +408,8 @@ const denverSuburbs: BlogPost = {
   isoDate: '2026-04-12',
   title: 'The Best Denver Suburbs for Food',
   subtitle: "You don't have to drive into the city for a great meal. Here's where to eat in the suburbs.",
-  coverImageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&auto=format&fit=crop&q=80',
-  coverImageAlt: 'A lively suburban restaurant with warm lighting and packed tables',
+  coverImageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop&q=85',
+  coverImageAlt: 'Warm and busy restaurant dining room with hanging lights',
   body: (
     <article className="space-y-8">
 

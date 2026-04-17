@@ -40,7 +40,7 @@ export default function MenuPage() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const getAddedEntries = useAddedRestaurantsStore((s) => s.getEntries)
-  const { items: allItems, ratings, addItem, setRating, getRating, loadForRestaurant } = useMenuStore()
+  const { items: allItems, ratings, addItem, setRating, getRating, getAverageRating, loadForRestaurant } = useMenuStore()
 
   useEffect(() => {
     if (!slug) return
@@ -138,6 +138,7 @@ export default function MenuPage() {
         <ol className="list-none space-y-5 mb-10">
           {rankedItems.map((item: MenuItem, idx: number) => {
             const rating = getRating(item.id)
+            const avg = getAverageRating(item.id)
             return (
               <li key={item.id} className="flex flex-col gap-2 py-4 border-b border-warm-border last:border-0">
                 <div className="flex items-baseline gap-3">
@@ -145,14 +146,21 @@ export default function MenuPage() {
                     {rating !== null ? idx + 1 : '—'}
                   </span>
                   <span className="font-body text-base text-ink">{item.name}</span>
-                  {rating !== null && (
-                    <span className="ml-auto text-sm font-body font-semibold text-earth shrink-0">
-                      {rating}/10
-                    </span>
-                  )}
+                  <div className="ml-auto flex items-baseline gap-3 shrink-0">
+                    {avg !== null && (
+                      <span className="text-xs font-body text-sand">
+                        avg {avg.toFixed(1)}
+                      </span>
+                    )}
+                    {rating !== null && (
+                      <span className="text-sm font-body font-semibold text-earth">
+                        {rating}/10
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="pl-9">
-                  <ScoreButtons rating={rating} onRate={(r) => setRating(item.id, r)} />
+                  <ScoreButtons rating={rating} onRate={(r) => setRating(restaurantId!, item.id, r)} />
                 </div>
               </li>
             )

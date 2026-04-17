@@ -1,1 +1,1 @@
-export { getLists, getListById, vote, getSessionVotes, addRestaurantToList, getAddedEntries, checkMapsUrlExists, getMenuItems, addMenuItem, getMenuRatings, setMenuRating } from './supabaseService'
+export { getLists, getListById, vote, getSessionVotes, addRestaurantToList, getAddedEntries, checkMapsUrlExists, searchMenuItems, getMenuItems, addMenuItem, getMenuRatings, getMenuAverageRatings, setMenuRating } from './supabaseService'

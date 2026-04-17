@@ -252,6 +252,21 @@ export async function checkMapsUrlExists(
   return (count ?? 0) > 0
 }
 
+// ─── Search ───────────────────────────────────────────────────────────────────
+
+export async function searchMenuItems(
+  query: string,
+): Promise<Array<{ id: string; name: string; restaurant_id: string }>> {
+  const { data, error } = await supabase
+    .from('menu_items')
+    .select('id, name, restaurant_id')
+    .ilike('name', `%${query}%`)
+    .limit(5)
+
+  if (error) throw error
+  return (data ?? []) as Array<{ id: string; name: string; restaurant_id: string }>
+}
+
 // ─── Menu items ───────────────────────────────────────────────────────────────
 
 export async function getMenuItems(restaurantId: string): Promise<MenuItem[]> {
@@ -295,6 +310,32 @@ export async function getMenuRatings(
 
   return Object.fromEntries(
     (data ?? []).map((r) => [r.item_id as string, r.rating as number]),
+  )
+}
+
+export async function getMenuAverageRatings(
+  restaurantId: string,
+): Promise<Record<string, number>> {
+  const items = await getMenuItems(restaurantId)
+  if (items.length === 0) return {}
+
+  const { data, error } = await supabase
+    .from('menu_ratings')
+    .select('item_id, rating')
+    .in('item_id', items.map((i) => i.id))
+
+  if (error) throw error
+
+  const sums: Record<string, { sum: number; count: number }> = {}
+  for (const row of data ?? []) {
+    const id = row.item_id as string
+    if (!sums[id]) sums[id] = { sum: 0, count: 0 }
+    sums[id].sum += row.rating as number
+    sums[id].count += 1
+  }
+
+  return Object.fromEntries(
+    Object.entries(sums).map(([id, { sum, count }]) => [id, sum / count]),
   )
 }
 

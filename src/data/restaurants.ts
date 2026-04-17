@@ -153,7 +153,7 @@ export const restaurants: Record<string, Restaurant> = {
     city: 'denver',
     neighborhood: 'LoHi',
     priceRange: 2,
-    description: 'Roman-inspired pies and house-made pasta in one of LoHi\'s most approachable rooms — the fennel sausage pizza is the move.',
+    description: "Roman-inspired pies and house-made pasta in one of LoHi's most approachable rooms — the fennel sausage pizza is the move.",
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bar+Dough+Denver+CO',
     tags: ['roman', 'lohi', 'pasta', 'approachable'],
   },

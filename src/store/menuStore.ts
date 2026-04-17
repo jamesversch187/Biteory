@@ -1,30 +1,35 @@
 import { create } from 'zustand'
 import type { MenuItem } from '@/types'
-import { getMenuItems, addMenuItem as addMenuItemService, getMenuRatings, setMenuRating } from '@/services'
+import { getMenuItems, addMenuItem as addMenuItemService, getMenuRatings, getMenuAverageRatings, setMenuRating } from '@/services'
 import posthog from '@/lib/posthog'
 
 interface MenuState {
   items: Record<string, MenuItem[]>
   ratings: Record<string, number>
+  averageRatings: Record<string, number>
   loadForRestaurant(restaurantId: string): Promise<void>
   addItem(restaurantId: string, name: string): Promise<void>
   getItems(restaurantId: string): MenuItem[]
-  setRating(menuItemId: string, rating: number): Promise<void>
+  setRating(restaurantId: string, menuItemId: string, rating: number): Promise<void>
   getRating(menuItemId: string): number | null
+  getAverageRating(menuItemId: string): number | null
 }
 
 export const useMenuStore = create<MenuState>()((set, get) => ({
   items: {},
   ratings: {},
+  averageRatings: {},
 
   async loadForRestaurant(restaurantId) {
-    const [items, ratings] = await Promise.all([
+    const [items, ratings, averageRatings] = await Promise.all([
       getMenuItems(restaurantId),
       getMenuRatings(restaurantId),
+      getMenuAverageRatings(restaurantId),
     ])
     set((state) => ({
       items: { ...state.items, [restaurantId]: items },
       ratings: { ...state.ratings, ...ratings },
+      averageRatings: { ...state.averageRatings, ...averageRatings },
     }))
   },
 
@@ -44,16 +49,22 @@ export const useMenuStore = create<MenuState>()((set, get) => ({
     return get().items[restaurantId] ?? []
   },
 
-  async setRating(menuItemId, rating) {
+  async setRating(restaurantId, menuItemId, rating) {
     set((state) => ({ ratings: { ...state.ratings, [menuItemId]: rating } }))
     await setMenuRating(menuItemId, rating)
     posthog.capture('menu_item_rated', {
       item_id: menuItemId,
       rating,
     })
+    const updatedAverages = await getMenuAverageRatings(restaurantId)
+    set((state) => ({ averageRatings: { ...state.averageRatings, ...updatedAverages } }))
   },
 
   getRating(menuItemId) {
     return get().ratings[menuItemId] ?? null
+  },
+
+  getAverageRating(menuItemId) {
+    return get().averageRatings[menuItemId] ?? null
   },
 }))

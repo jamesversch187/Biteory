@@ -86,7 +86,7 @@ export interface MenuItem {
 }
 
 export interface FilterState {
-  cuisine: CuisineType | null
+  cuisines: CuisineType[]
 }
 
 export interface BlogPost {

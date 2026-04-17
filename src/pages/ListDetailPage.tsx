@@ -205,7 +205,6 @@ export default function ListDetailPage() {
         </div>
       </div>
 
-      {/* Ranked list */}
       {rankedEntries.length === 0 && (
         <p className="text-sm font-body text-sand py-8 text-center">
           No restaurants match this price filter.
