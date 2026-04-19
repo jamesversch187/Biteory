@@ -59,7 +59,8 @@ export default function ListDetailPage() {
   }, [priceDropdownOpen])
 
   const { sessionVotes, castVote, getTally, hydrateForList } = useVoteStore()
-  const { getEntries: getAddedEntries, loadForList } = useAddedRestaurantsStore()
+  const { entries: addedEntriesMap, loadForList } = useAddedRestaurantsStore()
+  const addedEntries = list ? (addedEntriesMap[list.id] ?? []) : []
 
   useEffect(() => {
     if (!slug) return
@@ -87,7 +88,12 @@ export default function ListDetailPage() {
   // Re-sort live as tallies change, then apply price filter
   const rankedEntries = useMemo(() => {
     if (!list) return []
-    const allEntries = [...list.entries, ...getAddedEntries(list.id)]
+    const seen = new Set<string>()
+    const allEntries = [...list.entries, ...addedEntries].filter((e) => {
+      if (seen.has(e.restaurant.id)) return false
+      seen.add(e.restaurant.id)
+      return true
+    })
     const sorted = [...allEntries].sort((a, b) => {
       const aNet =
         getTally(list.id, a.restaurant.id, a.initialUpvotes, a.initialDownvotes).upvotes -
@@ -100,7 +106,7 @@ export default function ListDetailPage() {
     if (!priceFilter) return sorted
     return sorted.filter((e) => e.restaurant.priceRange === priceFilter)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list, sessionVotes, getAddedEntries, priceFilter])
+  }, [list, sessionVotes, addedEntries, priceFilter])
 
   if (loading) {
     return (
